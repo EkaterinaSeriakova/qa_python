@@ -55,8 +55,18 @@ class TestBooksCollector:
 
         assert len(collector.get_books_genre()) == 1
 
+    # метод get_books_genre возвращает словарь со всеми добавленными книгами
+    def test_get_books_genre_returns_all_added_books(self):
+        collector = BooksCollector()
+
+        collector.add_new_book('Гарри Поттер')
+        collector.add_new_book('Оно')
+
+        assert collector.get_books_genre() == {'Гарри Поттер': '', 'Оно': ''}
+
+    
     # у добавленной книги ещё нет жанра — хранится пустая строка
-    def test_new_book_has_no_genre(self):
+    def test_get_book_genre_new_book_has_empty_genre(self):
         collector = BooksCollector()
 
         collector.add_new_book('Мартин Иден')
@@ -104,8 +114,8 @@ class TestBooksCollector:
 
         assert collector.get_books_with_specific_genre('Ужасы') == ['Оно', 'Мгла']
 
-    # книги с жанрами с возрастным рейтингом (Ужасы, Детективы) не попадают в список для детей
-    def test_books_for_children_excludes_age_rated(self):
+    # get_books_for_children не включает книги с жанрами, у которых есть возрастной рейтинг
+    def test_get_books_for_children_excludes_age_rated(self):
         collector = BooksCollector()
 
         collector.add_new_book('Гарри Поттер')
@@ -117,6 +127,16 @@ class TestBooksCollector:
 
         assert collector.get_books_for_children() == ['Гарри Поттер']
 
+     # метод get_list_of_favorites_books возвращает только книги из избранного
+    def test_get_list_of_favorites_books_returns_favorites(self):
+        collector = BooksCollector()
+
+        collector.add_new_book('Гарри Поттер')
+        collector.add_new_book('Оно')
+        collector.add_book_in_favorites('Гарри Поттер')
+
+        assert collector.get_list_of_favorites_books() == ['Гарри Поттер']
+    
     # книгу можно добавить в избранное, повторно добавить нельзя
     def test_add_book_in_favorites_no_duplicates(self):
         collector = BooksCollector()
